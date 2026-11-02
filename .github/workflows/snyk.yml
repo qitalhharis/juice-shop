@@ -14,6 +14,7 @@ jobs:
   security:
     runs-on: ubuntu-latest
 
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,11 +30,6 @@ jobs:
       - name: Install Snyk CLI
         run: npm install -g snyk
 
-      - name: Run Snyk vulnerability scan
-        run: snyk test --severity-threshold=high
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
       - name: Check Snyk token
         run: |
           if [ -n "$SNYK_TOKEN" ]; then
@@ -44,3 +40,9 @@ jobs:
           fi
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk vulnerability scan
+        run: snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
