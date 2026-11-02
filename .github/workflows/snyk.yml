@@ -19,6 +19,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check GitHub secret
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z "$SNYK_TOKEN" ]; then
+            echo "Secret tidak tersedia"
+          else
+            echo "Secret tersedia"
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
