@@ -33,3 +33,14 @@ jobs:
         run: snyk test --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Check Snyk token
+        run: |
+          if [ -n "$SNYK_TOKEN" ]; then
+            echo "SNYK_TOKEN tersedia"
+          else
+            echo "SNYK_TOKEN tidak ditemukan"
+            exit 1
+          fi
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
