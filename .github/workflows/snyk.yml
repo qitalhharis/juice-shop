@@ -1,5 +1,19 @@
-      name: Check GitHub secrets
-      env:
+name: Check GitHub secrets
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check GitHub secrets
+        env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
         run: |
@@ -14,4 +28,3 @@
           else
             echo "TEST_SECRET tidak tersedia"
           fi
-
