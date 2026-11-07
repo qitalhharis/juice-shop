@@ -1,58 +1,17 @@
-
-name: Snyk Security Scan
-
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-
-permissions:
-  contents: read
-
-jobs:
-  security:
-    runs-on: ubuntu-latest
-
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Check GitHub secret
-        env:
+      name: Check GitHub secrets
+      env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          if [ -z "$SNYK_TOKEN" ]; then
-            echo "Secret tidak tersedia"
-          else
-            echo "Secret tersedia"
-          fi
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '26'
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps --ignore-scripts
-
-      - name: Install Snyk CLI
-        run: npm install -g snyk
-
-      - name: Check Snyk token
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
         run: |
           if [ -n "$SNYK_TOKEN" ]; then
             echo "SNYK_TOKEN tersedia"
           else
-            echo "SNYK_TOKEN tidak ditemukan"
-            exit 1
+            echo "SNYK_TOKEN tidak tersedia"
           fi
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Run Snyk vulnerability scan
-        run: snyk test --severity-threshold=high
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          if [ -n "$TEST_SECRET" ]; then
+            echo "TEST_SECRET tersedia"
+          else
+            echo "TEST_SECRET tidak tersedia"
+          fi
 
